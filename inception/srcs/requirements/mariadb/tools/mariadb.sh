@@ -1,22 +1,22 @@
 #!/bin/bash
 
-mysql_install_db
 
 /etc/init.d/mysql start
 
 #Check if db exists
 
-if [-d "/var/lib/mysql/$MYSQL_DB"]
-then
-    echo "Database is already here"
-else
-    mysql_secure_installation << _EOF_
-    it-was-snowfall
-    and-reagan-gave-me-the-vision
-    _EOF
+if [-d "/run/mysqld"]; 
+    mkdir -p /run/mysqld
+    chown -R mysql:mysql /run/mysqld
+fi
 
-echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' 'MYSQL_ROOT_PW'; FLUSH PRIVILEGES;" | mysql -u root
-echo "CREATE DATABASE IF NOT EXISTS $MYSQL_DB; GRANT ALL ON $MYSQL_DB.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PW'; FLUSH PRIVILEGES;" | mysql -u root
+if [-d "/run/mysqld"]
+then
+else
+    chown -R mysql:mysql /var/lib/mysql 
+    mysql_install_db --basedir=/usr --datadir=var/lib/mysql --user=mysql --rpm > /dev/null
+
+fi
 
 #Import database in the mysql command line
 mysql -u root -p$MYSQL_ROOT_PW $MYSQL_DB < /usr/local/bin/wordpress.sql
