@@ -4,7 +4,7 @@ DATA=/home/${LOGIN}/data
 COMPOSE_FILE=./srcs/docker-compose.yml
 ENV= LOGIN=${LOGIN} DATA=${DATA} DOMAIN=${LOGIN}.42.fr
 
-RM=rm -rf
+RM=sudo rm -rf
 
 all: up
 
