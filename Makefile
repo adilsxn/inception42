@@ -1,5 +1,8 @@
-DATA=/home/acuva-nu/data
+LOGIN=login
+DOMAIN = ${LOGIN}.42.fr
+DATA=/home/login/data
 COMPOSE_FILE=./srcs/docker-compose.yml
+ENV= LOGIN=${LOGIN} DATA=${DATA} DOMAIN=${LOGIN}.42.fr
 
 RM=rm -rf
 
@@ -19,11 +22,12 @@ stop:
 		@docker-compose -f $(COMPOSE_FILE) stop
 
 setup:
+	  ${ENV} ./jumpstart.sh
 	  @echo "Setting up the directories\n"
-	  @sudo mkdir -p /home/acuva-nu
+	  @sudo mkdir -p /home/${LOGIN}
 	  @sudo mkdir -p ${DATA}
-	  @sudo mkdir -p ${DATA}/mariadb
-	  @sudo mkdir -p ${DATA}/wordpress
+	  @sudo mkdir -p ${DATA}/mariadb-vol
+	  @sudo mkdir -p ${DATA}/wordpress-vol
 
 	  
 status:
@@ -35,6 +39,7 @@ clean:
 		${RM} ${DATA}
 
 fclean: down clean
+		${ENV} ./shutdown.sh
 		@docker system prune -f -a --volumes
 		@docker volume rm srcs_mariadb srcs_wordpress
 
