@@ -1,12 +1,13 @@
-FROM debian:bullseye
+FROM alpine:3.19
 
 #Install   mariadb
-RUN apt -y update && apt install -y mariadb-server \
-    mariadb-client
+RUN apk update && apk upgrade && apk add --no-cache\
+    mariadb mariadb-client
 
 
 #Copy mariadb configuration script 
-COPY ./tools/mariadb.sh /tmp/mariadb.sh
+COPY tools/mariadb.sh /tmp/mariadb.sh
+
 #Making the script executable
 RUN chmod +x /tmp/mariadb.sh
 
