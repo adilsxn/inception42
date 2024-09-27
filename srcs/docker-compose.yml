@@ -10,7 +10,7 @@ services:
      - inception
    ports:
      - "443:443"
-   restarts: on-failure
+   restart: on-failure
    volumes:
      - ./wordpress-vol:/var/www/html
    depends_on:
@@ -23,7 +23,7 @@ services:
    env_file: .env
    networks:
     - inception
-   restarts: on-failure
+   restart: on-failure
    volumes:
     - ./mariadb-vol:var/lib/mysql/
 
@@ -34,7 +34,7 @@ services:
    env_file: .env
    networks:
      -  inception
-   restarts: on-failure
+   restart: on-failure
    volumes:
     - ./wordpress-vol:/var/www/html
    depends_on:
