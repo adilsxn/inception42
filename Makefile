@@ -9,17 +9,17 @@ RM=sudo rm -rf
 all: up
 
 up: setup
-		@docker-compose -f $(COMPOSE_FILE) up --build -d
+		@${ENV} docker-compose -f $(COMPOSE_FILE) up --build -d
 
 down:
-		@docker-compose -f $(COMPOSE_FILE) down
+		@${ENV} docker-compose -f $(COMPOSE_FILE) down
 
 start: 
-		@docker-compose -f $(COMPOSE_FILE) start
+		@${ENV} docker-compose -f $(COMPOSE_FILE) start
 
 
 stop: 
-		@docker-compose -f $(COMPOSE_FILE) stop
+		@${ENV} docker-compose -f $(COMPOSE_FILE) stop
 
 setup:
 	  ${ENV} ./jumpstart.sh
