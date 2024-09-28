@@ -3,7 +3,7 @@ FROM alpine:3.19
 #Install php and deps
 RUN		apk update && apk upgrade &&\
 		apk add --no-cache php81 php-phar php81-json php81-curl \
-            php81-fpm php81-msqli php81-iconv mariadb-client curl \
+            php81-fpm php81-mysqli php81-iconv mariadb-client curl \
             php81-cli curl bash vim
 
 
