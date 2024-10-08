@@ -1,22 +1,17 @@
 FROM alpine:3.19 
 
-RUN apk update && apk upgrade &&  apk add --no-cache \
-    openssl nginx && mkdir -p /var/www/html/ && \
-    mkdir -p /etc/nginx/ssl
+RUN apk update && apk upgrade && apk add --no-cache \
+    openssl nginx 
 
-COPY conf/nginx.conf   /etc/nginx/conf.d/default.conf
+RUN mkdir -p /etc/nginx/ssl
 
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096\
-        -out /etc/nginx/ssl/acuva-nu.crt \
-        -keyout /etc/nginx/ssl/acuva-nu.key \
-        -subj "/C=PT/ST=Lisbon/L=Lisbon/O=42School/OU=42Lisboa/CN=acuva-nu.42.fr" 
-
-RUN adduser -D -g 'www' www &&\
-    chown -R www:www /run/nginx/ && \
-    chown -R www:www /var/www/html/
-
-EXPOSE 443/tcp
+RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+            -out /etc/nginx/ssl/nginx-selfsigned.pem \
+            -keyout /etc/nginx/ssl/nginx-selfsigned.key \
+            -subj "/C=PT/ST=Lisboa/L=Lisboa/O=42School/OU=42Lisboa/CN=acuva-nu" 
 
 RUN mkdir -p /run/nginx
+
+COPY conf/nginx.conf   /etc/nginx/http.d/default.conf
 
 ENTRYPOINT ["nginx","-g", "daemon off;"]
